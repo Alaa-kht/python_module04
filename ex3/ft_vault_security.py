@@ -1,31 +1,32 @@
-def vault_security() -> None:
-    print("=== CYBER ARCHIVES - VAULT SECURITY SYSTEM ===")
-
+def secure_archive(
+    filename: str,
+    action: str = "read",
+    content: str = ""
+) -> tuple:
     try:
-        with open("vault_data.txt", "r") as f:
-            print("Initiating secure vault access...")
-            print("Vault connection established with failsafe protocols")
-
-            content = f.read()
-
-            print("SECURE EXTRACTION:")
-            print(content)
-
-        with open("secure_protocols.txt", "w") as f:
-            print("SECURE PRESERVATION:")
-
-            entry = "[CLASSIFIED] New security protocols archived"
-            f.write(entry + "\n")
-
-            print(entry)
-        print("All vault operations completed with maximum security.")
-
-    except FileNotFoundError:
-        print("ERROR: Storage vault not found. Run data generator first.")
-
+        if action == "read":
+            with open(filename, 'r') as f:
+                return (True, f.read())
+        else:
+            with open(filename, 'w') as f:
+                f.write(content)
+                return (True, "Content successfully written to file")
     except OSError as e:
-        print("Error:", e)
+        return (False, str(e))
 
 
 if __name__ == "__main__":
-    vault_security()
+    print("=== Cyber Archives Security ===")
+
+    print("Using 'secure_archive' to read from a nonexistent file:")
+    print(secure_archive("/not/existing/file"))
+
+    print("Using 'secure_archive' to read from an inaccessible file:")
+    print(secure_archive("C:/Windows/System32/config/SAM"))
+
+    print("Using 'secure_archive' to read from a regular file:")
+    result = secure_archive("ancient_fragment.txt")
+    print(result)
+
+    print("Using 'secure_archive' to write previous content to a new file:")
+    print(secure_archive("new_vault.txt", "write", result[1]))
